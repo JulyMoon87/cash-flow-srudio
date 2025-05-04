@@ -20,26 +20,37 @@ export interface DonationPlatform {
   averageDonation: number;
 }
 
+// Helper function to generate random data
+const getRandomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+const getRandomFloat = (min: number, max: number, decimals: number) => {
+  const str = (Math.random() * (max - min) + min).toFixed(decimals);
+  return parseFloat(str);
+};
+const generateRandomString = (length: number) => Math.random().toString(36).substring(2, 2 + length);
+
+
 /**
  * Asynchronously retrieves a list of donation platforms.
+ * Simulates fetching dynamic data for automation.
  *
  * @returns A promise that resolves to an array of DonationPlatform objects.
  */
 export async function getDonationPlatforms(): Promise<DonationPlatform[]> {
-  // TODO: Implement this by calling an API.
+  // Simulate API call delay
+  await new Promise(resolve => setTimeout(resolve, getRandomInt(100, 500)));
 
-  return [
-    {
-      name: 'Donation Platform 1',
-      description: 'Description of Donation Platform 1',
-      link: 'https://example.com/donation1',
-      averageDonation: 10,
-    },
-    {
-      name: 'Donation Platform 2',
-      description: 'Description of Donation Platform 2',
-      link: 'https://example.com/donation2',
-      averageDonation: 15,
-    },
-  ];
+  const count = getRandomInt(1, 3); // Generate 1 to 3 platforms
+  const platforms: DonationPlatform[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const platformName = `Support ${generateRandomString(6)}`;
+    platforms.push({
+      name: platformName,
+      description: `Receive donations for your creative work or open source project on ${platformName}.`,
+      link: `https://donate.example/${generateRandomString(7)}`,
+      averageDonation: getRandomFloat(5, 50, 2),
+    });
+  }
+
+  return platforms;
 }

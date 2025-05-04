@@ -20,26 +20,36 @@ export interface AirdropOpportunity {
   potentialEarnings: number;
 }
 
+// Helper function to generate random data
+const getRandomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+const getRandomFloat = (min: number, max: number, decimals: number) => {
+  const str = (Math.random() * (max - min) + min).toFixed(decimals);
+  return parseFloat(str);
+};
+const generateRandomString = (length: number) => Math.random().toString(36).substring(2, 2 + length);
+
 /**
  * Asynchronously retrieves a list of airdrop opportunities.
+ * Simulates fetching dynamic data for automation.
  *
  * @returns A promise that resolves to an array of AirdropOpportunity objects.
  */
 export async function getAirdropOpportunities(): Promise<AirdropOpportunity[]> {
-  // TODO: Implement this by calling an API.
+  // Simulate API call delay
+  await new Promise(resolve => setTimeout(resolve, getRandomInt(100, 500)));
 
-  return [
-    {
-      name: 'Airdrop 1',
-      description: 'Description of Airdrop 1',
-      link: 'https://example.com/airdrop1',
-      potentialEarnings: 100,
-    },
-    {
-      name: 'Airdrop 2',
-      description: 'Description of Airdrop 2',
-      link: 'https://example.com/airdrop2',
-      potentialEarnings: 200,
-    },
-  ];
+  const count = getRandomInt(1, 5); // Generate 1 to 5 opportunities
+  const opportunities: AirdropOpportunity[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const projectName = `Project ${generateRandomString(5).toUpperCase()}`;
+    opportunities.push({
+      name: `${projectName} Airdrop`,
+      description: `Claim your ${projectName} tokens for participating in the ecosystem. Eligibility criteria may apply.`,
+      link: `https://example-airdrop.com/${generateRandomString(8)}`,
+      potentialEarnings: getRandomFloat(50, 1000, 2),
+    });
+  }
+
+  return opportunities;
 }

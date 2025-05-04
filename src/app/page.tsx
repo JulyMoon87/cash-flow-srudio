@@ -5,19 +5,57 @@ import { OpportunitySuggestions } from "@/components/dashboard/opportunity-sugge
 import { Skeleton } from "@/components/ui/skeleton";
 import { Bitcoin, HandHeart, Link as LinkIcon, BrainCircuit } from 'lucide-react';
 
-export default function DashboardPage() {
-  // Combine data from different sources for the table
-  // In a real app, this data fetching would likely be more robust, possibly with loading states
-  const earningsData = [
-     // Placeholder data - replace with actual fetched data
-    { id: 'airdrop1', source: 'Airdrop', name: 'Cosmos Drop', amount: 150, link: 'https://cosmos.network', type: 'airdrop' },
-    { id: 'affiliate1', source: 'Affiliate', name: 'Exchange Referral', amount: 75.50, link: 'https://exchange.example', type: 'affiliate' },
-    { id: 'donation1', source: 'Donation', name: 'Gitcoin Grant', amount: 25.00, link: 'https://gitcoin.co', type: 'donation' },
-    { id: 'airdrop2', source: 'Airdrop', name: 'Solana Project', amount: 80, link: 'https://solana.com', type: 'airdrop' },
-  ];
+// Helper function to generate random data
+const getRandomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+const getRandomFloat = (min: number, max: number, decimals: number) => {
+  const str = (Math.random() * (max - min) + min).toFixed(decimals);
+  return parseFloat(str);
+};
 
-  // Mock past earnings data for AI suggestions
-  const pastEarningsString = JSON.stringify(earningsData);
+const generateEarningsData = (count: number) => {
+  const types = ['airdrop', 'affiliate', 'donation'] as const;
+  const data = [];
+  for (let i = 0; i < count; i++) {
+    const type = types[getRandomInt(0, 2)];
+    let name = '';
+    let source = '';
+    let link = '';
+    switch(type) {
+        case 'airdrop':
+            name = `Token Drop ${getRandomInt(1, 100)}`;
+            source = 'Airdrop';
+            link = `https://etherscan.io/tx/${Math.random().toString(36).substring(2)}`;
+            break;
+        case 'affiliate':
+            name = `Referral ${getRandomInt(1, 50)}`;
+            source = 'Affiliate';
+            link = `https://partner.example/ref${getRandomInt(1000, 9999)}`;
+            break;
+        case 'donation':
+            name = `Supporter ${getRandomInt(1, 200)}`;
+            source = 'Donation';
+            link = `https://opencollective.com/project-${getRandomInt(1, 10)}`;
+            break;
+    }
+    data.push({
+      id: `${type}${i}-${Date.now()}`, // More unique ID
+      source: source,
+      name: name,
+      amount: getRandomFloat(5, 500, 2),
+      link: link,
+      type: type,
+    });
+  }
+  return data;
+};
+
+
+export default function DashboardPage() {
+  // Generate dynamic data to simulate automation
+  const earningsData = generateEarningsData(getRandomInt(3, 7)); // Generate 3 to 7 random earnings entries
+
+  // Prepare past earnings data for AI suggestions
+  const pastEarningsString = JSON.stringify(earningsData.map(e => ({ source: e.source, name: e.name, amount: e.amount, type: e.type })));
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -34,6 +72,7 @@ export default function DashboardPage() {
         </CardHeader>
         <CardContent>
           <Suspense fallback={<EarningsTableSkeleton />}>
+            {/* Pass dynamically generated data */}
             <EarningsTable data={earningsData} />
           </Suspense>
         </CardContent>
@@ -47,6 +86,7 @@ export default function DashboardPage() {
         </CardHeader>
         <CardContent>
           <Suspense fallback={<SuggestionSkeleton />}>
+            {/* Pass dynamically generated data string */}
             <OpportunitySuggestions pastEarningsData={pastEarningsString} />
           </Suspense>
         </CardContent>
