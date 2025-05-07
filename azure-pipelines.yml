@@ -5,18 +5,13 @@
 
 trigger:
 - master
-
 variables:
-
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: '64850a58-982f-4ee1-a4e6-f60f3b765440'
-
+  azureSubscription: 'a64850a58-982f-4ee1-a4e6-f60f3b765440'
   # Web app name
   webAppName: 'Josmadmarket'
-
   # Environment name
   environmentName: 'Josmadmarket'
-
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
@@ -45,14 +40,10 @@ stages:
       displayName: 'Archive files'
       inputs:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-        includeRootFolder: false
         archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-        replaceExistingArchive: true
-
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zi
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       artifact: drop
-
 - stage: Deploy
   displayName: Deploy stage
   dependsOn: Build
@@ -69,7 +60,6 @@ stages:
           steps:
           - task: AzureWebApp@1
             displayName: 'Azure Web App Deploy: Josmadmarket'
-            inputs:
               azureSubscription: $(azureSubscription)
               appType: webAppLinux
               appName: $(webAppName)
