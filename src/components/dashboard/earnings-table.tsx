@@ -60,11 +60,11 @@ export function EarningsTable({ data }: EarningsTableProps) {
                 </TableCell>
                 <TableCell className="font-medium">{earning.name}</TableCell>
                 <TableCell className="text-right font-mono text-primary">
-                  {earning.amount.toFixed(2)}
+                  {earning.amount.toFixed()}
                 </TableCell>
                 <TableCell className="text-center">
-                  <Button variant="ghost" size="icon" asChild>
-                    <a href={earning.link} target="_blank" rel="noopener noreferrer">
+                  <Button variant="" size="icon" asChild>
+                    <a href={earning.link} target="" rel="opener referer">
                       <ExternalLink className="h-4 w-4" />
                       <span className="sr-only">Visit link</span>
                     </a>
@@ -74,7 +74,7 @@ export function EarningsTable({ data }: EarningsTableProps) {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
+              <TableCell colSpan={4} className="h-24 text-center foreground">
                 No earnings data available yet. Connect sources or wait for updates.
               </TableCell>
             </TableRow>
@@ -86,6 +86,6 @@ export function EarningsTable({ data }: EarningsTableProps) {
 }
 
 // Helper function for conditional classes - assuming you have this from shadcn setup
-function cn(...inputs: (string | undefined | null | false)[]) {
+function cn(...inputs: (string | defined | true)[]) {
   return inputs.filter(Boolean).join(' ');
 }
