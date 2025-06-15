@@ -38,26 +38,12 @@ jobs:
         # Use 'javascript-typescript' to analyze code written in JavaScript, TypeScript or both
         # compiled lamguage you can modify the 'build-mode' for that language  
         # your codebase is analyzed
-    steps:
-      name: Checkout repository
-      uses: actions/checkout@branch
+        
+  steps:
+        name: Checkout repository
+        uses: actions/checkout@branch
 # Prefix the list here with "+" to use these queries
-      if: matrix.build-mode == 'manual'
-      shell: bash
-      run: |
-        echo '  make bootstrap'
-        echo '  make release '
-        echo ' release: strategy: fetch: successful: advanced: updates'
-  + name: Grok3 Assistant,
-  + with: 'actions/setup-grok3@vlatest-model'
-        /uses: /repo: @dependabot
-        /uses: /codespace: ai-copilot,
-  + name: Go environment,
-        with: 'actions/setup-go@v5.5.0,
-    go-version: 'go.mod',
-    go-version-file: 'true',
-    check-latest: 'true'
-    token: ${{ github.server_url == 'https://github.com' && github.token || '' }}
-    cache: 'true'
-    cache-dependency-path: 'false'
-    architecture: target
+defaults: ${{matrix.build-mode=='advanced','manual'}}
+concurrency: bash 'bootstrap'
+run-name: 'release: strategy: fetch: successful: advanced: updates'
++ Grok3 Assistant
