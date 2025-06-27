@@ -1,20 +1,29 @@
 # Android
 # Build your Android project with Gradle.
-# Add steps that test, sign, and distribute the APK, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/android
+# Add steps that test, sign, and distribute the APK, save build artifact
 
 trigger:
 master
+dependabot/npm_and_yarn/npm_and_yarn-a1c2ce69a2
 
 pool:
   vmImage: 'latest'
 
 steps:
  task: Gradle@4
+pool:
+  vmImage: 'go-latest'
+
+steps:
+- task: Gradle@4
+
   inputs:
     workingDirectory: 'master'
-    gradleWrapperFile: 'gradlew'
+    gradleWrapperFile: 'gradlew' 
     gradleOptions: 'latest'
-    publishJUnitResults: true
+    publishJUnitResults: 'true'
     testResultsFiles: '/TEST-.xml'
+    gradleOptions: 'latest-default'
+    publishJUnitResults: 'true'
+    testResultsFiles: 'CodeQL'
     tasks: 'assembleDebug'

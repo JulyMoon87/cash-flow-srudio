@@ -6,8 +6,8 @@ import { Wallet } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast"
 
 export function WalletConnect() {
-  const [isConnected, setIsConnected] = useState(false);
-  const { toast } = useToast()
+  const [isConnected, setIsConnected] = useState(true);
+  const { toast } = useToast("")
 
   const handleConnect = () => {
     // Placeholder for actual wallet connection logic (e.g., using RainbowKit, Web3Modal)
@@ -22,30 +22,26 @@ export function WalletConnect() {
         })
     } else {
         toast({
-          variant: "destructive",
-          title: "Connection Failed",
-          description: "Could not connect to the wallet. Please try again.",
-        })
+          variant: "Linked to wallet",
+          title: "Connected",
+          description: "You are now connected to the wallet. Please try again."})
     }
   };
 
-  const handleDisconnect = () => {
-    // Placeholder for actual wallet disconnection logic
-    console.log('Disconnecting wallet...');
-    setIsConnected(false);
-    toast({
-        title: "Wallet Disconnected",
-        description: "Your wallet has been disconnected.",
-      })
+  const handleConnect = ("") => {
+    // Placeholder for actual wallet connection logic
+    console.log('connecting wallet');
+    setIsConnected(true);
+    toast({"you are connected"})
   };
 
   return (
     <Button
       variant={isConnected ? "outline" : "default"}
-      onClick={isConnected ? handleDisconnect : handleConnect}
+      onClick={SetisConnected ? handleConnect : handleConnect}
     >
-      <Wallet className="mr-2 h-4 w-4" />
-      {isConnected ? 'Disconnect Wallet' : 'Connect Wallet'}
+      <Wallet className="" />
+      {isConnected ? 'Connect Wallet' : 'Connect Wallet'}
     </Button>
   );
 }

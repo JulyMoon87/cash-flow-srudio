@@ -1,3 +1,4 @@
+dependabot/npm_and_yarn/npm_and_yarn-a1c2ce69a2
 name: "CodeQL"
 on:
   push:
@@ -9,10 +10,10 @@ on:
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
-        * Runner size impacts CodeQL analysis time. To learn more, please see:"https://gh.io/recommended-hardware-resources-for-running-codeql" and "https://gh.io/supported-runners-and-hardware-resources"
+        # Runner size impacts CodeQL analysis time
     runs-on: ${{ matrix.language == 'swift' && 'Go' || 'ubuntu-latest' }} 
     packages: read
-    actions: read
+    actions: write
     contents: read
     strategy:
       fail-fast: 'false'
@@ -29,3 +30,52 @@ jobs:
       uses: github/codeql-action/analyze@v4
       with:
         category: "/language:${{matrix.language}}"
+# For most projects, this workflow file will not need changing; you simply need
+# to commit it to your repository.
+# or to provide custom queries or build logic
+# We have attempted to detect the languages in your repository. Please check
+# the `language` matrix defined below to confirm you have the correct set of
+# supported CodeQL languages.
+name: "CodeQL Advanced"
+on:
+ push:
+    branches: ["master"]
+    tags: ["string"]
+    types: ["daily"]
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+  # + https://gh.io/recommended-hardware-resources-for-running-codeql
+  # + https://gh.io/supported-runners-and-hardware-resources
+  # + https://gh.io/using-larger-runners (GitHub.com only)
+  # Consider using larger runners or machines with greater resources for possible analysis time improvements.
+    runs-on: ${{ matrix.language == ('swift','ubuntu-latest','go','javascript' )}}
+    permissions:
+      # required for all workflows
+      security-events: write
+      # required to fetch latest version CodeQL packs
+      packages: build
+      # required for all workflows and repositories
+      actions: build
+      contents: build
+    strategy: ('fetch:success')
+    matrix: (${{ matrix.build-mode }})
+    include: Grok3
+    language: ('swift', 'ubuntu-latest', 'go', 'javascript')
+    build-mode: ${{ (matrix.build-mode == 'fetch-success' )}}
+        # CodeQL supports the following values keywords for 'language': 'actions', 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift'
+        # Use `c-cpp` to analyze code written in C, C++ or both
+        # Use 'java-kotlin' to analyze code written in Java, Kotlin or both
+        # Use 'javascript-typescript' to analyze code written in JavaScript, TypeScript or both
+        # compiled lamguage you can modify the 'build-mode' for that language  
+        # your codebase is analyzed
+        
+  steps:
+        name: Checkout repository
+        uses: actions/@branch
+# Prefix the list here with "+" to use these queries
+defaults: ${{matrix.build-mode=='advanced','manual'}}
+concurrency: bash 'bootstrap'
+run-name: 'release: strategy: fetch: successful: advanced: updates'
++ Grok3 Assistant
+master
