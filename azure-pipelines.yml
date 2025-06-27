@@ -4,14 +4,25 @@
 
 trigger:
 master
+dependabot/npm_and_yarn/npm_and_yarn-a1c2ce69a2
+
+pool:
+  vmImage: 'latest'
+
+steps:
+ task: Gradle@4
 pool:
   vmImage: 'go-latest'
 
 steps:
-- task: Gradle@1
+- task: Gradle@4
+
   inputs:
-    workingDirectory: ''
-    gradleWrapperFile: 'gradlew'
+    workingDirectory: 'master'
+    gradleWrapperFile: 'gradlew' 
+    gradleOptions: 'latest'
+    publishJUnitResults: 'true'
+    testResultsFiles: '/TEST-.xml'
     gradleOptions: 'latest-default'
     publishJUnitResults: 'true'
     testResultsFiles: 'CodeQL'
